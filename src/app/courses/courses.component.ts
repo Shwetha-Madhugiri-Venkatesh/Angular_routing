@@ -27,7 +27,13 @@ export class CoursesComponent {
       // console.log(this.query_inp);
       // this.AllCourses = this.coursesService.courses.filter(course=>course.title.toLocaleLowerCase().includes(this.query_inp.toLowerCase()));
       if (this.query_inp == undefined || this.query_inp == null || this.query_inp == '') {
-        this.AllCourses = this.coursesService.courses;
+        // this.coursesService.getAllCourses().subscribe((data:Course[])=>{
+        //   this.AllCourses=data;
+        // });
+        this.AllCourses = this.active_route.snapshot.data['courses'];
+        // this.active_route.data.subscribe((data)=>{
+        //   this.AllCourses = data;
+        // })
       } else {
         console.log(this.query_inp);
         this.AllCourses = this.coursesService.courses.filter(course => course.title.toLocaleLowerCase().includes(this.query_inp.toLowerCase()));

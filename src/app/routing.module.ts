@@ -7,6 +7,10 @@ import { PopularComponent } from './home/popular/popular.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LoginComponent } from './login/login.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { canActivate_gaurd, canActivateChild_guard, child_canActivate, canDeactivate } from './canActivate_guard';
+import { CanActivate_gaurd } from './Services/CanActivate_routeGuard.service';
 
 
 const routes:Routes = [
@@ -15,20 +19,25 @@ const routes:Routes = [
   // {path:'',redirectTo:'Home', pathMatch:'full'},
   {path:'Home', component:HomeComponent},
   {path:'About', component:AboutComponent},
-  {path:'Contact', component:ContactComponent},
-  {path:'Courses', component:CoursesComponent},
+  {path:'Contact', component:ContactComponent, canDeactivate:[CanActivate_gaurd]},
+//   {path:'Contact', component:ContactComponent, canDeactivate:[canDeactivate]},
+   {path:'Courses', component:CoursesComponent, resolve:{courses:CanActivate_gaurd}},
+//   {path:'Courses', component:CoursesComponent,canActivate:[canActivate_gaurd]},
   // {path:'Courses/Course/:id', component:CourseDetailComponent},
-  {path:'Courses', children:[
+  {path:'Courses',canActivateChild:[canActivateChild_guard], children:[
     {path:'Course/:id',component:CourseDetailComponent},
     {path:'popular',component:PopularComponent},
+    {path:'CheckOut', component:CheckoutComponent, canActivate:[child_canActivate]}
+    // {path:'CheckOut', component:CheckoutComponent,canActivate:[CanActivate_gaurd]},
   ]},
+  {path:'Login', component:LoginComponent},
   {path:'**',component:NotFoundComponent}, //WildCard route- always specified below all the routes
 ]
 
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes),//registering routes
+    RouterModule.forRoot(routes,{enableTracing:true}),//registering routes
   ],
   
  exports:[RouterModule],
